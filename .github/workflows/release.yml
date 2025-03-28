@@ -102,17 +102,31 @@ jobs:
           overwrite: true
   build_docker_image_native:
     name: 'Build and publish Docker image to GitHub Packages'
-    needs: [ build-native-image ]
     runs-on: ubuntu-latest
     env:
       DOCKER_IMAGE_NAME: 'docker.pkg.github.com/jdubois/azure-cli-mcp/azure-cli-mcp'
     steps:
       - name: Set Tag name environment variable
         run: echo "TAG_NAME=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-      - name: Download application package
-        uses: actions/download-artifact@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Java
+        uses: actions/setup-java@v4
         with:
-          name: linux-binary
+          distribution: 'oracle'
+          java-version: '17'
+          check-latest: false
+          cache: 'maven'
+      - name: Build with Maven
+        run: './mvnw package'
+      - uses: graalvm/setup-graalvm@v1
+        with:
+          distribution: 'graalvm'
+          java-version: '21'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build native image on Linux
+        run: native-image -jar target/azure-cli-mcp-*.jar azure-cli-mcp-linux
+        if: runner.os == 'Linux'
       - name: Login to GitHub Packages
         run: docker login -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }} docker.pkg.github.com
       - name: Build the native (GraalVM) Docker image

@@ -2,6 +2,10 @@
 
 This is an [MCP Server](https://modelcontextprotocol.io) that wraps the [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/), adds a nice prompt to improve how it works, and exposes it.
 
+## Demo
+
+![Demo](docs/azure-cli-mcp-screencast.gif)
+
 ## What can it do?
 
 It has access to the full Azure CLI, so it can do anything the Azure CLI can do. Here are a few scenarios:
@@ -26,9 +30,18 @@ This isn't a technical limitation, and we should have the `http` transport and O
 - Install the Azure CLI: you can do this by following the instructions [here](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli).
 - Authenticate to your Azure account. You can do this by running `az login` in your terminal.
 
-### Downloading the binaries
+### Installing the MCP server
 
-_You can run this MCP server as a Java archive (you'll need Java installed), or as a native binary for your platform (Linux, Mac OS, Windows)._
+_The easiest way to install `azure-cli-mcp` is by using Docker._
+
+You can run it with the following command:
+
+```bash
+docker run -i docker.pkg.github.com/jdubois/azure-cli-mcp/azure-cli-mcp:latest
+```
+
+_If you don't want to use Docker, you can run `azure-cli-mcp` as a Java archive (you'll need Java installed), or as a
+native binary for your platform (Linux, Mac OS, Windows)._
 
 To run the _Java_ archive, you need to have a Java Virtual Machine (version 17 or higher) installed.
 
