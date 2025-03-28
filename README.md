@@ -4,9 +4,10 @@ This is an [MCP Server](https://modelcontextprotocol.io) that wraps the [Azure C
 
 ## What can it do?
 
-It has access to the full Azure CLI, so it can do anything the Azure CLI can do. It also has a few scenarios:
+It has access to the full Azure CLI, so it can do anything the Azure CLI can do. Here are a few scenarios:
 
-- Listing your resources and checking their configuration. For example, you can get the rate limits of model deployed to Azure OpenAI.
+- Listing your resources and checking their configuration. For example, you can get the rate limits of a model deployed
+  to Azure OpenAI.
 - Fixing some configuration or security issues. For example, you can ask it to secure a Blob Storage account.
 - Creating resources. For example, you can ask it to create an Azure Container Apps instance, an Azure Container Registry, and connect them using managed identity.
 
@@ -48,12 +49,12 @@ To run the binary on a _Mac OS_, you need to:
 - Allow Mac OS X to execute it: `xattr -d com.apple.quarantine azure-cli-mcp-macos`
 - Run the binary: `./azure-cli-mcp-macos`
 
-- To run the binary on _Windows_, you need to:
+To run the binary on _Windows_, you need to:
 
 - Download the latest release: `gh release download --repo jdubois/azure-cli-mcp --pattern='azure-cli-mcp-windows.exe'`
 - Run the binary: `azure-cli-mcp-windows`
 
-### Configuring the MCP with Claude Desktop
+### Configuring the MCP server with Claude Desktop
 
 Claude Desktop makes it easy to configure and chat with the MCP server. If you want a more advanced usage, we recommend using VS Code (see next section).
 
@@ -88,7 +89,9 @@ For _Linux_, _Mac OS_, and _Windows_:
 
 ### Configuring the MCP server with VS Code
 
-This configuration allows you to use GPT-4o, which has excellent training data on Azure, which makes this LLM a great choice for this.
+_At the moment, this is only available with VS Code Insiders._
+
+This configuration allows you to use GPT-4o, which has excellent training data on Azure.
 
 Also, if you are developing a project and want to deploy it to Azure, VS Code will now have your project's context as well as this MCP Server, which will make it really good at deploying your project.
 
@@ -96,4 +99,3 @@ Also, if you are developing a project and want to deploy it to Azure, VS Code wi
 - Install this MCP Server using the command palette: `MCP: Add Server...`
 - Configure GitHub Copilot to run in `Agent` mode, by clicking on the arrow at the bottom of the the chat window
 - On top of the chat window, you should see the `azure-cli-mcp` server configured as a tool
-
