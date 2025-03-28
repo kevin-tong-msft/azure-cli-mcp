@@ -7,9 +7,6 @@ jobs:
   build-jar:
     name: 'Build JAR package'
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ${{ github.workspace }}/cli
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
