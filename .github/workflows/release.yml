@@ -24,8 +24,8 @@ jobs:
         with:
           name: java-binary
           path: |
-            ${{ github.workspace }}/cli/target/*.jar
-            !${{ github.workspace }}/cli/target/original-*.jar
+            ${{ github.workspace }}/target/*.jar
+            !${{ github.workspace }}/target/original-*.jar
           retention-days: 1
   build-native-image:
     name: Native image build on ${{ matrix.os }}
