@@ -51,7 +51,7 @@ jobs:
           java-version: '21'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Build native image on Linux
-        run: native-image --static -jar azure-cli-mcp-*.jar azure-cli-mcp-linux
+        run: native-image -jar azure-cli-mcp-*.jar azure-cli-mcp-linux
         if: runner.os == 'Linux'
       - name: Build native image on Mac OS X
         run: native-image -jar azure-cli-mcp-*.jar azure-cli-mcp-macos
