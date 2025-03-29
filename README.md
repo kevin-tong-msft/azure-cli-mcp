@@ -4,7 +4,7 @@ This is an [MCP Server](https://modelcontextprotocol.io) that wraps the [Azure C
 
 ## Demo
 
-![Demo](docs/azure-cli-mcp-screencast.gif)
+[![Demo](https://img.youtube.com/vi/y_OexCcfhW0/0.jpg)](https://www.youtube.com/watch?v=y_OexCcfhW0)
 
 ## What can it do?
 

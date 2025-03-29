@@ -117,23 +117,9 @@ jobs:
           java-version: '17'
           check-latest: false
           cache: 'maven'
-      - name: Build with Maven
-        run: './mvnw package'
-      - uses: graalvm/setup-graalvm@v1
-        with:
-          distribution: 'graalvm'
-          java-version: '21'
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build native image on Linux
-        run: native-image -jar target/azure-cli-mcp-*.jar azure-cli-mcp-linux
-        if: runner.os == 'Linux'
       - name: Login to GitHub Packages
         run: docker login -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }} docker.pkg.github.com
-      - name: Build the native (GraalVM) Docker image
-        uses: docker/build-push-action@v5
-        with:
-          push: false
-          tags: ${{ env.DOCKER_IMAGE_NAME }}:${{ env.TAG_NAME }},${{ env.DOCKER_IMAGE_NAME }}:latest
-          file: ./src/main/docker/Dockerfile.native
+      - name: Build native image with Maven
+        run: './mvnw -Pnative spring-boot:build-image -Dspring-boot.build-image.imageName=${{ env.DOCKER_IMAGE_NAME }}:latest''
       - name: Push to GitHub Packages
         run: docker push ${{ env.DOCKER_IMAGE_NAME }} --all-tags
