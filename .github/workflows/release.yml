@@ -27,50 +27,9 @@ jobs:
             ${{ github.workspace }}/target/*.jar
             !${{ github.workspace }}/target/original-*.jar
           retention-days: 1
-  build-native-image:
-    name: Native image build on ${{ matrix.os }}
-    needs: [ build-jar ]
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        include:
-          - os: ubuntu-latest
-            artifact_name: linux-binary
-          - os: macos-latest
-            artifact_name: macos-binary
-          - os: windows-latest
-            artifact_name: windows-binary
-    steps:
-      - name: Download application package
-        uses: actions/download-artifact@v4
-        with:
-          name: java-binary
-      - uses: graalvm/setup-graalvm@v1
-        with:
-          distribution: 'graalvm'
-          java-version: '21'
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build native image on Linux
-        run: native-image -jar azure-cli-mcp-*.jar azure-cli-mcp-linux
-        if: runner.os == 'Linux'
-      - name: Build native image on Mac OS X
-        run: native-image -jar azure-cli-mcp-*.jar azure-cli-mcp-macos
-        if: runner.os == 'macOS'
-      - name: Build native image on Windows
-        run: native-image -jar azure-cli-mcp-*.jar azure-cli-mcp-windows
-        if: runner.os == 'Windows'
-      - name: Temporarily save package
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ matrix.artifact_name }}
-          path: |
-            azure-cli-mcp-*
-            !*.txt
-            !*.jar
-          retention-days: 1
   publish-binaries:
     name: 'Publish binaries to GitHub packages'
-    needs: [ build-native-image ]
+    needs: [ build-jar ]
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -78,15 +37,6 @@ jobs:
           - artifact_name: java-binary
             binary_name: azure-cli-mcp-*.jar
             file_glob: true
-          - artifact_name: linux-binary
-            binary_name: azure-cli-mcp-linux
-            file_glob: false
-          - artifact_name: macos-binary
-            binary_name: azure-cli-mcp-macos
-            file_glob: false
-          - artifact_name: windows-binary
-            binary_name: azure-cli-mcp-windows.exe
-            file_glob: false
     steps:
       - name: Download binary
         uses: actions/download-artifact@v4
@@ -100,31 +50,3 @@ jobs:
           file_glob: ${{ matrix.file_glob }}
           tag: ${{ github.ref }}
           overwrite: true
-  build_docker_image_native:
-    name: 'Build and publish Docker image to GitHub Packages'
-    runs-on: ubuntu-latest
-    env:
-      DOCKER_IMAGE_NAME: 'docker.pkg.github.com/jdubois/azure-cli-mcp/azure-cli-mcp'
-    permissions:
-      contents: read
-      packages: write
-      attestations: write
-      id-token: write
-    steps:
-      - name: Set Tag name environment variable
-        run: echo "TAG_NAME=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'oracle'
-          java-version: '17'
-          check-latest: false
-          cache: 'maven'
-      - name: Login to GitHub Packages
-        run: docker login -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }} docker.pkg.github.com
-      - name: Build native image with Maven
-        run: './mvnw -Pnative spring-boot:build-image -Dspring-boot.build-image.imageName=${{ env.DOCKER_IMAGE_NAME }}:latest'
-      - name: Push to GitHub Packages
-        run: docker push ${{ env.DOCKER_IMAGE_NAME }} --all-tags

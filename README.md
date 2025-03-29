@@ -32,40 +32,12 @@ This isn't a technical limitation, and we should have the `http` transport and O
 
 ### Installing the MCP server
 
-_The easiest way to install `azure-cli-mcp` is by using Docker._
-
-You can run it with the following command:
-
-```bash
-docker run -i docker.pkg.github.com/jdubois/azure-cli-mcp/azure-cli-mcp:latest
-```
-
-_If you don't want to use Docker, you can run `azure-cli-mcp` as a Java archive (you'll need Java installed), or as a
-native binary for your platform (Linux, Mac OS, Windows)._
+_You can run `azure-cli-mcp` as a Java archive (you'll need Java installed)_
 
 To run the _Java_ archive, you need to have a Java Virtual Machine (version 17 or higher) installed.
 
 - Download the latest release: `gh release download --repo jdubois/azure-cli-mcp --pattern='azure-cli-mcp-*.jar'`
 - Run the binary: `java -jar azure-cli-mcp-*.jar`
-
-To run the binary on _Linux_, you need to:
-
-- Download the latest release: `gh release download --repo jdubois/azure-cli-mcp --pattern='azure-cli-mcp-linux'`
-- Make the binary executable: `chmod +x azure-cli-mcp-linux`
-- Run the binary: `./azure-cli-mcp`
-
-To run the binary on a _Mac OS_, you need to:
-
-- Download the latest release: `gh release download --repo jdubois/azure-cli-mcp --pattern='azure-cli-mcp-macos'`
-- If on Apple Silicon, install Rosetta if it's not already installed: `/usr/sbin/softwareupdate --install-rosetta --agree-to-license`
-- Make the binary executable: `chmod +x azure-cli-mcp-macos`
-- Allow Mac OS X to execute it: `xattr -d com.apple.quarantine azure-cli-mcp-macos`
-- Run the binary: `./azure-cli-mcp-macos`
-
-To run the binary on _Windows_, you need to:
-
-- Download the latest release: `gh release download --repo jdubois/azure-cli-mcp --pattern='azure-cli-mcp-windows.exe'`
-- Run the binary: `azure-cli-mcp-windows`
 
 ### Configuring the MCP server with Claude Desktop
 
@@ -73,7 +45,6 @@ Claude Desktop makes it easy to configure and chat with the MCP server. If you w
 
 You need to add the server to your `claude_dekstop_config.json` file.
 
-For _Java_:
 ```json
 {
     "mcpServers": {
@@ -88,25 +59,14 @@ For _Java_:
 }
 ```
 
-For _Linux_, _Mac OS_, and _Windows_:
-```json
-{
-    "mcpServers": {
-        "azure-cli": {
-            "command": "<path to the binary>",
-            "args": []
-        }
-    }
-}
-```
-
 ### Configuring the MCP server with VS Code
 
 _At the moment, this is only available with VS Code Insiders._
 
-This configuration allows you to use GPT-4o, which has excellent training data on Azure.
+When you are developing a project and want to deploy it to Azure, VS Code will now have your project's context as well
+as this MCP Server, which will make it really good at deploying your project.
 
-Also, if you are developing a project and want to deploy it to Azure, VS Code will now have your project's context as well as this MCP Server, which will make it really good at deploying your project.
+Here are the steps to configure it:
 
 - Install GitHub Copilot
 - Install this MCP Server using the command palette: `MCP: Add Server...`
