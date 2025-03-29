@@ -30,6 +30,8 @@ jobs:
     name: 'Publish binaries to GitHub packages'
     needs: [ build-jar ]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Download binary
         uses: actions/download-artifact@v4

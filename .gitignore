@@ -33,3 +33,4 @@ build/
 .vscode/
 /azure-cli-mcp.log
 /release.properties
+/pom.xml.releaseBackup
