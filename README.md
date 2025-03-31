@@ -17,13 +17,28 @@ It has access to the full Azure CLI, so it can do anything the Azure CLI can do.
 
 ## Is it safe to use?
 
-As the MCP server is driven by an LLM, we would recommend to be careful and validate the commands it generates. Then, if you're using a good LLM like GPT-4o, which has 
+As the MCP server is driven by an LLM, we would recommend to be careful and validate the commands it generates. Then, if
+you're using a good LLM like Claude 3.7 or GPT-4o, which has
 excellent training data on Azure, our experience has been very good.
+
+Please read our [License](LICENSE) which states that "THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND",
+so you use this MCP server at your own risk.
+
+## Is it secured, and should I run this on a remote server?
+
+Short answer: **NO**.
+
+This MCP server runs `az` commands for you, and could be hacked by an attacker to run any other command. The current
+implementation, as with most MCP servers at the moment, only works with the `stio` transport:
+it's supposed to run locally on your machine, using your Azure CLI credentials, as you would do by yourself.
+
+In the future, it's totally possible to have this MCP server support the `http` transport, and an Azure token
+authentication, so that it could be used remotely by different persons. It's a second step, that will be done once the
+MCP specification and SDK are more stable.
 
 ## How do I install it?
 
 This MCP server currently only works with the `stdio` transport, so it should run locally on your machine, using your Azure CLI credentials.
-This isn't a technical limitation, and we should have the `http` transport and OAuth authentication in the future.
 
 ### Prerequisites
 
@@ -32,12 +47,15 @@ This isn't a technical limitation, and we should have the `http` transport and O
 
 ### Installing the MCP server
 
-_You can run `azure-cli-mcp` as a Java archive (you'll need Java installed)_
+_You can run `azure-cli-mcp` as a Java executable_
 
 To run the _Java_ archive, you need to have a Java Virtual Machine (version 17 or higher) installed.
 
-- Download the latest release: `gh release download --repo jdubois/azure-cli-mcp --pattern='azure-cli-mcp-*.jar'`
-- Run the binary: `java -jar azure-cli-mcp-*.jar`
+Binaries are available on the [GitHub Release page](https://github.com/jdubois/azure-cli-mcp/releases), here's how you
+can download and run them:
+
+- Download the latest release: `gh release download --repo jdubois/azure-cli-mcp --pattern='azure-cli-mcp.jar'`
+- Run the binary: `java -jar azure-cli-mcp.jar`
 
 ### Configuring the MCP server with Claude Desktop
 
@@ -52,7 +70,7 @@ You need to add the server to your `claude_dekstop_config.json` file.
             "command": "java",
             "args": [
                 "-jar",
-                "/Users/julien/workspace/azure-cli-mcp/target/azure-cli-mcp-0.0.1-SNAPSHOT.jar"
+              "/Users/julien/workspace/azure-cli-mcp/target/azure-cli-mcp.jar"
             ]
         }
     }

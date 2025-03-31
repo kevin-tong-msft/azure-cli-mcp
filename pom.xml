@@ -64,6 +64,7 @@
 	</dependencyManagement>
 
 	<build>
+		<finalName>azure-cli-mcp</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.graalvm.buildtools</groupId>
