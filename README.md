@@ -2,7 +2,7 @@
 
 This is an [MCP Server](https://modelcontextprotocol.io) that wraps the [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/), adds a nice prompt to improve how it works, and exposes it.
 
-## Demo
+## Demos
 
 ### Short 2-minute demo with Claude Desktop
 
