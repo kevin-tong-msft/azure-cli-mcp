@@ -4,7 +4,13 @@ This is an [MCP Server](https://modelcontextprotocol.io) that wraps the [Azure C
 
 ## Demo
 
-[![Demo](https://img.youtube.com/vi/y_OexCcfhW0/0.jpg)](https://www.youtube.com/watch?v=y_OexCcfhW0)
+### Short 2-minute demo with Claude Desktop
+
+[![Short Demo](https://img.youtube.com/vi/y_OexCcfhW0/0.jpg)](https://www.youtube.com/watch?v=y_OexCcfhW0)
+
+### Complete 18-minute demo with VS Code
+
+[![Complete Demo](https://img.youtube.com/vi/NZxTr32A9lY/0.jpg)](https://www.youtube.com/watch?v=NZxTr32A9lY)
 
 ## What can it do?
 
