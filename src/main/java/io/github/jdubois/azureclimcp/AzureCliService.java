@@ -18,7 +18,7 @@ public class AzureCliService {
     private static final String commandPrompt = """
             Your job is to answer questions about an Azure environment by executing Azure CLI commands. You have the following rules:
             
-            - You should the Azure CLI to manage Azure resources and services. Do not use any other tool.
+            - You should use the Azure CLI to manage Azure resources and services. Do not use any other tool.
             - You should provide a valid Azure CLI command starting with 'az'. For example: 'az vm list'.
             - Whenever a command fails, retry it 3 times before giving up with an improved version of the code based on the returned feedback.
             - When listing resources, ensure pagination is handled correctly so that all resources are returned.
