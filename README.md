@@ -52,16 +52,16 @@ _You can run `azure-cli-mcp` as a Java executable_
 To run the _Java_ archive, you need to have a Java Virtual Machine (version 17 or higher) installed.
 
 Binaries are available on the [GitHub Release page](https://github.com/jdubois/azure-cli-mcp/releases), here's how you
-can download and run them:
+can download the latest one with the GitHub CLI:
 
 - Download the latest release: `gh release download --repo jdubois/azure-cli-mcp --pattern='azure-cli-mcp.jar'`
-- Run the binary: `java -jar azure-cli-mcp.jar`
 
 ### Configuring the MCP server with Claude Desktop
 
 Claude Desktop makes it easy to configure and chat with the MCP server. If you want a more advanced usage, we recommend using VS Code (see next section).
 
-You need to add the server to your `claude_dekstop_config.json` file.
+You need to add the server to your `claude_dekstop_config.json` file. Please note that you need to point to the location
+where you downloaded the `azure-cli-mcp.jar` file.
 
 ```json
 {
@@ -70,7 +70,7 @@ You need to add the server to your `claude_dekstop_config.json` file.
             "command": "java",
             "args": [
                 "-jar",
-              "/Users/julien/workspace/azure-cli-mcp/target/azure-cli-mcp.jar"
+              "~/Downloads/azure-cli-mcp.jar"
             ]
         }
     }
