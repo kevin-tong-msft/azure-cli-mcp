@@ -1,0 +1,38 @@
+name: Continuous Integration
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build_jar:
+    name: Build Jar file
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'oracle'
+          java-version: '21'
+          check-latest: false
+          cache: 'maven'
+      - name: Package the application
+        run: ./mvnw package
+  build_docker_image_native:
+    name: Build and publish Docker image to GitHub Packages
+    runs-on: ubuntu-22.04
+    env:
+      DOCKER_IMAGE_NAME: 'docker.pkg.github.com/jdubois/azure-cli-mcp'
+    steps:
+      - name: Set Tag name environment variable
+        run: echo "TAG_NAME=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ env.DOCKER_IMAGE_NAME }} .
+      - name: Login to GitHub Packages
+        run: docker login -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }} docker.pkg.github.com
+      - name: Push to GitHub Packages
+        run: docker push ${{ env.DOCKER_IMAGE_NAME }} --all-tags

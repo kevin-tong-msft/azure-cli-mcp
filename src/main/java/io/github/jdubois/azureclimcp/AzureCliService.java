@@ -1,9 +1,12 @@
 package io.github.jdubois.azureclimcp;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -14,6 +17,9 @@ import java.io.InputStreamReader;
 public class AzureCliService {
 
     private final Logger logger = LoggerFactory.getLogger(AzureCliService.class);
+
+    @Value("${azure.cli.azure-credentials:}")
+    private String azureCredentials;
 
     private static final String commandPrompt = """
             Your job is to answer questions about an Azure environment by executing Azure CLI commands. You have the following rules:
@@ -27,6 +33,40 @@ public class AzureCliService {
             Be concise, professional and to the point. Do not give generic advice, always reply with detailed & contextual data sourced from the current Azure environment. Assume user always wants to proceed, do not ask for confirmation. I'll tip you $200 if you do this right.`;
             
             """;
+
+    public AzureCliService(@Value("${azure.cli.azure-credentials:}") String azureCredentials) {
+        this.azureCredentials = azureCredentials;
+
+        if (azureCredentials != null && !azureCredentials.isEmpty()) {
+            authenticate(azureCredentials);
+        } else {
+            logger.warn("No Azure credentials provided");
+        }
+    }
+
+    private void authenticate(String azureCredentials) {
+        try {
+            // Read and parse the JSON credentials
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode credentials = mapper.readTree(azureCredentials);
+
+            String tenantId = credentials.get("tenantId").asText();
+            String clientId = credentials.get("clientId").asText();
+            String clientSecret = credentials.get("clientSecret").asText();
+
+            String loginCommand = String.format(
+                    "az login --service-principal --tenant %s --username %s --password %s",
+                    tenantId, clientId, clientSecret
+            );
+
+            String result = runAzureCliCommand(loginCommand);
+            logger.info("Azure CLI login result: {}", result);
+        } catch (IOException e) {
+            logger.error("Error parsing Azure credentials", e);
+        } catch (Exception e) {
+            logger.error("Error during Azure CLI authentication", e);
+        }
+    }
 
     @Tool(
             name = "execute-azure-cli-command",
