@@ -46,27 +46,19 @@ MCP specification and SDK are more stable.
 
 This MCP server currently only works with the `stdio` transport, so it should run locally on your machine, using your Azure CLI credentials.
 
-### Prerequisites
+### Install and configure the server with Java
 
 - Install the Azure CLI: you can do this by following the instructions [here](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli).
 - Authenticate to your Azure account. You can do this by running `az login` in your terminal.
-
-### Installing the MCP server
-
-_You can run `azure-cli-mcp` as a Java executable_
-
-To run the _Java_ archive, you need to have a Java Virtual Machine (version 17 or higher) installed.
+- Make sure you have Java 17 or higher installed. You can check this by running `java -version` in your terminal.
 
 Binaries are available on the [GitHub Release page](https://github.com/jdubois/azure-cli-mcp/releases), here's how you
 can download the latest one with the GitHub CLI:
 
 - Download the latest release: `gh release download --repo jdubois/azure-cli-mcp --pattern='azure-cli-mcp.jar'`
 
-### Configuring the MCP server with Claude Desktop
-
-Claude Desktop makes it easy to configure and chat with the MCP server. If you want a more advanced usage, we recommend using VS Code (see next section).
-
-You need to add the server to your `claude_dekstop_config.json` file. Please note that you need to point to the location
+To use the server from Claude Desktop, add the server to your `claude_desktop_config.json` file. Please note that you
+need to point to the location
 where you downloaded the `azure-cli-mcp.jar` file.
 
 ```json
@@ -83,16 +75,52 @@ where you downloaded the `azure-cli-mcp.jar` file.
 }
 ```
 
-### Configuring the MCP server with VS Code
-
-_At the moment, this is only available with VS Code Insiders._
-
-When you are developing a project and want to deploy it to Azure, VS Code will now have your project's context as well
-as this MCP Server, which will make it really good at deploying your project.
-
-Here are the steps to configure it:
+To use the server from VS Code Insiders, here are the steps to configure it:
 
 - Install GitHub Copilot
 - Install this MCP Server using the command palette: `MCP: Add Server...`
 - Configure GitHub Copilot to run in `Agent` mode, by clicking on the arrow at the bottom of the the chat window
 - On top of the chat window, you should see the `azure-cli-mcp` server configured as a tool
+
+### Install and configure the server with Docker
+
+Create an Azure Service Principal and set the `AZURE_CREDENTIALS` environment variable. You can do this by running the
+following command in your terminal:
+
+```bash
+az ad sp create-for-rbac --name "azure-cli-mcp" --role contributor --scopes /subscriptions/<your-subscription-id>/resourceGroups/<your-resource-group> --json-auth
+```
+
+This will create a new Service Principal with the specified name and role, and output the credentials in JSON format.
+
+To use the server from Claude Desktop, add the server to your `claude_desktop_config.json` file.
+The `AZURE_CREDENTIALS` environment variable should be set to the JSON output from the previous command.
+
+```json
+{
+  "mcpServers": {
+    "azure-cli": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "AZURE_CREDENTIALS",
+        "ghcr.io/jdubois/azure-cli-mcp:latest"
+      ],
+      "env": {
+        "AZURE_CREDENTIALS": "{\"clientId\":\"...\",\"clientSecret\":\"...\",..."
+      }
+    }
+  }
+}
+```
+
+To use the server from VS Code Insiders, here are the steps to configure it:
+
+- Install GitHub Copilot
+- Install this MCP Server using the command palette: `MCP: Add Server...`
+- Configure GitHub Copilot to run in `Agent` mode, by clicking on the arrow at the bottom of the the chat window
+- On top of the chat window, you should see the `azure-cli-mcp` server configured as a tool
+
