@@ -46,6 +46,11 @@ MCP specification and SDK are more stable.
 
 This MCP server currently only works with the `stdio` transport, so it should run locally on your machine, using your Azure CLI credentials.
 
+_This server can run as a Java application or inside a Docker container._ If Java is installed on your machine, this
+first option is
+probably the easiest one. If you don't have Java installed, or if you want to have something a bit more secure, you can
+use the second option.
+
 ### Install and configure the server with Java
 
 - Install the Azure CLI: you can do this by following the instructions [here](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli).
