@@ -14,7 +14,7 @@ public class AzureCliMcpApplication {
 	}
 
 	@Bean
-	public ToolCallbackProvider weatherTools(AzureCliService azureCliService) {
+	public ToolCallbackProvider mcpTool(AzureCliService azureCliService) {
 		return MethodToolCallbackProvider.builder().toolObjects(azureCliService).build();
 	}
 
