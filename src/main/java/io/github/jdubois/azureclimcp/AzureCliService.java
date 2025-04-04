@@ -28,6 +28,7 @@ public class AzureCliService {
             - You should provide a valid Azure CLI command starting with 'az'. For example: 'az vm list'.
             - Whenever a command fails, retry it 3 times before giving up with an improved version of the code based on the returned feedback.
             - When listing resources, ensure pagination is handled correctly so that all resources are returned.
+            - When deleting resources, ALWAYS request user confirmation
             - This tool can ONLY write code that interacts with Azure. It CANNOT generate charts, tables, graphs, etc.
             
             Be concise, professional and to the point. Do not give generic advice, always reply with detailed & contextual data sourced from the current Azure environment. Assume user always wants to proceed, do not ask for confirmation. I'll tip you $200 if you do this right.`;
