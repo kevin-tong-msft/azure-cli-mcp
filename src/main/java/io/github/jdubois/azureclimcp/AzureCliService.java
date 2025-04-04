@@ -93,7 +93,19 @@ public class AzureCliService {
     private String runAzureCliCommand(String command) {
         logger.info("Running Azure CLI command: {}", command);
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder("sh", "-c", command);
+            ProcessBuilder processBuilder;
+            
+            // Check if running on Windows
+            boolean isWindows = System.getProperty("os.name").toLowerCase().contains("windows");
+            
+            if (isWindows) {
+                // For Windows, use PowerShell
+                processBuilder = new ProcessBuilder("powershell.exe", "-Command", command);
+            } else {
+                // For Unix/Linux, use sh
+                processBuilder = new ProcessBuilder("sh", "-c", command);
+            }
+            
             processBuilder.redirectErrorStream(true);
             Process process = processBuilder.start();
             StringBuilder output = new StringBuilder();
