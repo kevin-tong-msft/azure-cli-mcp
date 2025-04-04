@@ -1,4 +1,4 @@
-# Azure CLI MCP
+# Azure CLI MCP Server
 
 This is an [MCP Server](https://modelcontextprotocol.io) that wraps the [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/), adds a nice prompt to improve how it works, and exposes it.
 
